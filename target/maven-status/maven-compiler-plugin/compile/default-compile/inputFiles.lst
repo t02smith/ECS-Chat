@@ -4,7 +4,6 @@ C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\LoginWindow.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\Components\ActiveUsers.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\DrawWindow.java
-C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Utility\Listeners\TopBar\QuitListener.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Utility\Listeners\ChangeServerListener.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\Components\Settings.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\User.java
@@ -19,6 +18,7 @@ C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Utility\Listeners\TopBar\TopBarListener.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\App.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Utility\Listeners\UserHistoryListener.java
+C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\Window.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Utility\Listeners\Whiteboard\ChangeColourListener.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\Network\Communicator.java
 C:\University\Semester 2\COMP1206 - Programming 2\Lab 2\ecsChat\src\main\java\uk\ac\soton\comp1206\UI\Components\wbComponents\Whiteboard.java

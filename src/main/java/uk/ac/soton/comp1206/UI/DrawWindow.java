@@ -1,36 +1,31 @@
 package uk.ac.soton.comp1206.UI;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.Network.Communicator;
 import uk.ac.soton.comp1206.Network.PaintMessage;
 import uk.ac.soton.comp1206.UI.Components.wbComponents.Whiteboard;
+import uk.ac.soton.comp1206.Utility.Utility;
 import uk.ac.soton.comp1206.UI.Components.wbComponents.WbToolbar;
 
-public class DrawWindow {
-    private static final Logger logger = LogManager.getLogger(ChatWindow.class);
- 
-    private final App app;
-    private final Scene scene;
+public class DrawWindow extends Window { 
     private final Communicator communicator;
 
     private Whiteboard canvas;
     private WbToolbar toolbar;
 
-    private BorderPane root;
-
-    private double xOffset = 0;
-    private double yOffset = 0;
-
     public DrawWindow(App app, Communicator communicator) {
-        this.app = app;
+        super("ECS Draw", 650, 500);
+        this.scene.getStylesheets().add(Utility.getCSSFile("DrawWindow.css"));
+
+        //Closes just the draw window when exited
+        this.setOnClose(() -> {
+            logger.info("Closing Draw Window");
+            this.stage.close();
+            app.setDrawWindowStatus(false);
+        });
+
         this.communicator = communicator;
 
         //Add draw message listener
@@ -40,14 +35,13 @@ public class DrawWindow {
             }
         }));
 
+        //Create whiteboard
         this.canvas = new Whiteboard(600, 500);
-
         this.canvas.addSendDrawingListener(drawing -> {
             this.communicator.send(drawing.composeMessage());
         });
-        
-        //set up for whiteboard
 
+        //whiteboard holder
         var holder = new StackPane(this.canvas);
         holder.setId("whiteboard");
 
@@ -60,7 +54,7 @@ public class DrawWindow {
             this.canvas.setHeight(0.9*holder.getHeight());
         });
 
-        //Toolbar
+        //Whiteboard tools
         this.toolbar = new WbToolbar();
 
         this.toolbar.addLineWidthListener(width -> {
@@ -73,23 +67,10 @@ public class DrawWindow {
             logger.info("Colour changed to: {}", colour);
         });
 
-        this.root = new BorderPane(holder);
+        this.root.setCenter(holder);
         this.root.setBottom(this.toolbar);
 
-        this.root.setId("wb-border-pane");
-        this.scene = new Scene(this.root, 650, 500);
-
-        //Window options
-        var windowOptions = new WindowOptions(this.scene, "ECS Draw", () -> {
-            this.app.closeWhiteboard();
-            logger.info("Whiteboard closed.");
-        });
-
-        this.root.setTop(windowOptions);
-
-        this.scene.getStylesheets().add(this.getClass().getResource("/style/DrawWindow.css").toExternalForm());
-        this.scene.getStylesheets().add(this.getClass().getResource("/style/Common.css").toExternalForm());
-
+        
     }
 
     private void receiveDraw(String message) {
@@ -98,30 +79,6 @@ public class DrawWindow {
 
         var pm = new PaintMessage(drawing);
         pm.paint(this.canvas.getGraphicsContext2D());
-    }
-
-    public Scene getScene() {
-        return this.scene;
-    }
-
-    public Node getRoot() {
-        return this.root;
-    }
-
-    public double getXOffset() {
-        return this.xOffset;
-    }
-
-    public void setXOffset(double newVal) {
-        this.xOffset = newVal;
-    }
-
-    public double getYOffset() {
-        return this.yOffset;
-    }
-
-    public void setYOffset(double newVal) {
-        this.yOffset = newVal;
     }
 
 }

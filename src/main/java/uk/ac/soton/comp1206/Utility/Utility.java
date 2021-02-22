@@ -35,6 +35,12 @@ public class Utility {
         return new Image(Utility.class.getResource("/images/" + url).toExternalForm());
     }
 
+    //Get style files
+
+    public static String getCSSFile(String name) {
+        return Utility.class.getResource("/style/"+name).toExternalForm();
+    }
+
     //Get list of available servers
 
     public static HashMap<String, String> getServers() {
@@ -83,20 +89,20 @@ public class Utility {
         messages.add(message);
     }
 
-    public static void setSaveLocation(Stage stage) {
+    public static void setSaveLocation() {
         var chooser = new DirectoryChooser();
         chooser.setTitle("Select save location");
 
-        absolutePath = chooser.showDialog(stage).getAbsolutePath();
+        absolutePath = chooser.showDialog(new Stage()).getAbsolutePath();
         logger.info("Messages will be saved in: " + absolutePath);
     }
 
-    public static void saveMessages(Stage stage) {
+    public static void saveMessages() {
         if (!saveMessages.get()) return;
 
         var title = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 
-        if (absolutePath.isEmpty()) setSaveLocation(stage);
+        if (absolutePath.isEmpty()) setSaveLocation();
 
         try {
             var file = new FileWriter(absolutePath + "/" + title + ".txt");

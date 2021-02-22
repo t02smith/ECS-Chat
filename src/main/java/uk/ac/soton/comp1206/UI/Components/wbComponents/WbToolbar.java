@@ -1,7 +1,6 @@
 package uk.ac.soton.comp1206.UI.Components.wbComponents;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
@@ -15,10 +14,6 @@ public class WbToolbar extends HBox {
 
     private ChangeColourListener ccl;
     private ChangeLineWidthListener clw;
-
-    //tba
-    private Button undo;
-    private Button redo;
 
     public WbToolbar() {
         this.penSize = new Slider(0, 20, 8);

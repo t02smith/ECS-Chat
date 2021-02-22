@@ -6,13 +6,10 @@ import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import uk.ac.soton.comp1206.Network.Communicator;
 import uk.ac.soton.comp1206.UI.ChatWindow;
 import uk.ac.soton.comp1206.UI.DrawWindow;
 import uk.ac.soton.comp1206.UI.LoginWindow;
-import uk.ac.soton.comp1206.UI.Components.wbComponents.Whiteboard;
-import uk.ac.soton.comp1206.Utility.Utility;
 
 /**
  * JavaFX App
@@ -21,31 +18,14 @@ public class App extends Application {
 
     private static final Logger logger = LogManager.getLogger(App.class);
     private Communicator communicator;
-    private Stage stage;
 
-    private Stage wbWindow;
-    private boolean whiteboardOpen = false;
+    private boolean drawWindowOpen = false;
 
     private SimpleStringProperty username = new SimpleStringProperty();
     private SimpleStringProperty server = new SimpleStringProperty("ws://discord.ecs.soton.ac.uk:9500");
 
-    private double xOffset = 0;
-    private double yOffset = 0;
-
     @Override
-    @SuppressWarnings("all")
     public void start(Stage stage) {
-        this.stage = stage;
-
-        stage.setTitle("ECS Chat");
-        stage.setOnCloseRequest(event -> {
-            Utility.saveMessages(stage);
-            this.shutdown();
-        });
-        stage.getIcons().add(Utility.getImage("ECS.png"));
-
-        this.stage.initStyle(StageStyle.UNDECORATED);
-
         this.openLogin();
     }
 
@@ -54,6 +34,13 @@ public class App extends Application {
         launch();
     }
 
+    public void openDrawWindow() {
+        logger.info("Opening Draw Window");
+        new DrawWindow(this, this.communicator);
+        drawWindowOpen = true;
+    }
+
+    /*
     public void openWhiteboard() {
         logger.info("Starting whiteboard");
 
@@ -93,49 +80,23 @@ public class App extends Application {
 
     public void closeWhiteboard() {
         this.wbWindow.close();
-    }
+    }/*
 
+    /**
+     * Opens the login window
+     */
     public void openLogin() {
         logger.info("Opening Login Window");
-        var window = new LoginWindow(this);
-
-        this.stage.setScene(window.getScene());
-
-        var root = window.getRoot();
-        root.setOnMousePressed(event -> {
-            this.xOffset = event.getSceneX();
-            this.yOffset = event.getSceneY();
-        });
-
-        root.setOnMouseDragged(event -> {
-            this.stage.setX(event.getScreenX() - this.xOffset);
-            this.stage.setY(event.getScreenY() - this.yOffset);
-        });
-
-        this.stage.show();
-        this.stage.centerOnScreen();
+        new LoginWindow(this);
     }
 
+    /**
+     * Opens the chat window
+     */
     public void openChat() {
-        logger.info("Opening chat window");
+        logger.info("Opening chat window.");
         this.communicator = new Communicator(server.get());
-        var window = new ChatWindow(this, this.communicator);
-
-        this.stage.setScene(window.getScene());
-
-        var root = window.getRoot();
-        root.setOnMousePressed(event -> {
-            this.xOffset = event.getSceneX();
-            this.yOffset = event.getSceneY();
-        });
-
-        root.setOnMouseDragged(event -> {
-            this.stage.setX(event.getScreenX() - this.xOffset);
-            this.stage.setY(event.getScreenY() - this.yOffset);
-        });
-
-        this.stage.show();
-        this.stage.centerOnScreen();
+        new ChatWindow(this, this.communicator);
     }
 
     public void shutdown() {
@@ -179,12 +140,12 @@ public class App extends Application {
     }
 
     //Whiteboard
-    public boolean getWhiteboardOpen() {
-        return this.whiteboardOpen;
+    public boolean getDrawWindowStatus() {
+        return this.drawWindowOpen;
     }
 
-    public void setWhiteboardStatus(boolean status) {
-        this.whiteboardOpen = status;
+    public void setDrawWindowStatus(boolean status) {
+        this.drawWindowOpen = status;
     }
 
 }

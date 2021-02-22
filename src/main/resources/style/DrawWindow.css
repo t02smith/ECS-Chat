@@ -6,7 +6,7 @@
     -fx-background-color: white;
 }
 
-#wb-border-pane {
+#border-pane {
     -fx-background-image: url("../images/background.jpg");
     -fx-background-size: cover;
     -fx-background-color: transparent;

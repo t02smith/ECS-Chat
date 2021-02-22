@@ -1,13 +1,8 @@
 package uk.ac.soton.comp1206.UI;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -15,47 +10,34 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.Utility.Utility;
 
-public class LoginWindow  {
-    private static final Logger logger = LogManager.getLogger(LoginWindow.class);
+public class LoginWindow extends Window {
     private final App app;
 
-    private Scene scene;
-    private ImageView img;
-
-    private BorderPane root;
-
-    final private double defWidth = 600;
-    final private double defHeight = 300;
+    private ImageView img;  //Menu image
 
     public LoginWindow(App app) {
+        super("ECS Chat Login", 600, 300);
         this.app = app;
-        this.scene = createWindow();
-        this.getStyle();
-        logger.info("Login screen created");
 
-        //this.doFade(this.img);
+        this.scene.getStylesheets().addAll(Utility.getCSSFile("LoginWindow.css"));
+        this.createWindow();
         this.imgAnimation();
 
     }
 
-    private Scene createWindow() {
-        root = new BorderPane();
-
-        var scene = new Scene(root, this.defWidth, this.defHeight);
-
+    private void createWindow() {
         var hbox = new HBox();
 
         //Server selection
-
         var serverList = Utility.getServers();
 
+        //Server drop down menu
         var serverSelect = new ComboBox<String>();
         serverSelect.getItems().addAll(serverList.keySet());
         serverSelect.getSelectionModel().select("ECS: 9500");
@@ -68,8 +50,8 @@ public class LoginWindow  {
             this.getClass().getResource("/images/ECS-Menu.png").toExternalForm(),
              200, 200, false, false
         ));
-        img.setPreserveRatio(true);
-        img.setOpacity(0);
+        this.img.setPreserveRatio(true);
+        this.img.setOpacity(0);
 
         //Welcome message
         var welcomeMsg = new Label("Welcome to ECS Chat!");
@@ -104,32 +86,20 @@ public class LoginWindow  {
         hbox.getChildren().addAll(img, vbox);
         hbox.setAlignment(Pos.CENTER);
 
-        root.setCenter(hbox);
+        this.root.setCenter(hbox);
 
-        //Window
-        var windowOptions = new WindowOptions(scene, "ECS Chat Login", () -> {
-            logger.info("Closing window");
-            System.exit(0);
-        });
-
-        this.root.setTop(windowOptions);
-
-        return scene;
     }
 
     private void handleLogin() {
         if (this.app.getUsername().isBlank()) return;
-
         app.openChat();
+        this.stage.close();
+        logger.info("Closing login window.");
     }
 
-    public void doFade(Node element) {
-        FadeTransition fader = new FadeTransition(new Duration(5000), element);
-        fader.setFromValue(0);
-        fader.setToValue(1);
-        fader.play();
-    }
-
+    /**
+     * Main menu image animation
+     */
     private void imgAnimation() {
         var translate = new TranslateTransition(Duration.millis(2500), this.img);
         translate.setFromY(-200);
@@ -145,21 +115,4 @@ public class LoginWindow  {
         translate.play();
     }
 
-
-
-    private void getStyle() {
-        var mainCss = this.getClass().getResource("/style/LoginWindow.css").toExternalForm();
-        var common = this.getClass().getResource("/style/Common.css").toExternalForm();
-
-        this.scene.getStylesheets().addAll(mainCss, common);
-    }
-
-    @SuppressWarnings("all")
-    public Scene getScene() {
-        return this.scene;
-    }
-
-    public Node getRoot() {
-        return this.root;
-    }
 }

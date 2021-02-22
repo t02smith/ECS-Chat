@@ -3,6 +3,7 @@ package uk.ac.soton.comp1206.UI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -18,6 +19,8 @@ public class Window {
     protected Scene scene;
     protected Stage stage = new Stage();
 
+    protected WindowOptions windowOptions;
+
     protected double xOffset = 0;
     protected double yOffset = 0;
 
@@ -31,9 +34,10 @@ public class Window {
     public Window(String title, double width, double height, CloseWindowListener onClose) {
         //Sets the basic styles for the window
         this.root.setId("border-pane");
+        this.scene = new Scene(this.root, width, height);
         this.scene.getStylesheets().add(this.getClass().getResource("/style/Common.css").toExternalForm());
 
-        this.scene = new Scene(this.root, width, height);
+        this.stage.setScene(this.scene);
 
         //Initialises the window 
         this.stage.setTitle(title);
@@ -41,7 +45,8 @@ public class Window {
         this.stage.initStyle(StageStyle.UNDECORATED);
 
         //Custom window options
-        this.root.setTop(new WindowOptions(this.scene, title, onClose));
+        this.windowOptions = new WindowOptions(this.scene, title, onClose);
+        this.root.setTop(this.windowOptions);
 
         //Drag and moving the window
         this.root.setOnMousePressed(event -> {
@@ -53,10 +58,13 @@ public class Window {
 
         this.root.setOnMouseDragged(event -> {
             if (!(event.getTarget() instanceof Whiteboard)) {
-                this.xOffset = event.getScreenX() - this.xOffset;
-                this.yOffset = event.getScreenY() - this.yOffset;
+                this.stage.setX(event.getScreenX() - this.xOffset);
+                this.stage.setY(event.getScreenY() - this.yOffset);
             }
         });
+
+        this.stage.show();
+        this.stage.centerOnScreen();
     }
 
     /**
@@ -67,8 +75,21 @@ public class Window {
      */
     public Window(String title, double width, double height) {
         this(title, width, height, () -> {
-            System.exit(0);
             logger.info("{} closing.", title);
+            System.exit(0);
+            
         });
+    }
+
+    public void setOnClose(CloseWindowListener cwl) {
+        this.windowOptions.setOnClose(cwl);
+    }
+
+    public Scene getScene() {
+        return this.scene;
+    }
+
+    public Node getRoot() {
+        return this.root;
     }
 }

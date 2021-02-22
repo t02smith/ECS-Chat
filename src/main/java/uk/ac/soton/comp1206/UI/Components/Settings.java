@@ -12,7 +12,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import uk.ac.soton.comp1206.Utility.Utility;
 import uk.ac.soton.comp1206.Utility.Listeners.ChangeServerListener;
@@ -47,7 +46,7 @@ public class Settings extends VBox {
         saveMsg.setId("settings-checkbox");
         saveMsg.selectedProperty().bindBidirectional(Utility.saveMessageProperty());
         saveMsg.setOnAction(event -> {
-            Utility.setSaveLocation((Stage)this.getScene().getWindow());
+            Utility.setSaveLocation();
             logger.info("saveMessages set to " + Utility.getSaveMessages());
         });
 
@@ -55,7 +54,7 @@ public class Settings extends VBox {
         var changeLocation = new Button("Change location");
         changeLocation.setId("change-location-btn");
         changeLocation.setOnAction(event -> {
-            Utility.setSaveLocation((Stage)this.getScene().getWindow());
+            Utility.setSaveLocation();
         });
         
         //Change the current username

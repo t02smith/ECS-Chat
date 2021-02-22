@@ -4,14 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.User;
@@ -25,16 +19,13 @@ import uk.ac.soton.comp1206.UI.Components.UserHistory;
 import uk.ac.soton.comp1206.Utility.Utility;
 
 
-public class ChatWindow {
-    private static final Logger logger = LogManager.getLogger(ChatWindow.class);
+public class ChatWindow extends Window {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private final App app;
-    private final Scene scene;
     private final Communicator communicator;
 
     private VBox messages;
-    private BorderPane root;
     private ScrollPane sp;
 
     private HashMap<String, User> users = new HashMap<>();
@@ -44,7 +35,12 @@ public class ChatWindow {
     private boolean settingsOpen = false;
     private boolean activeUsersOpen = false;
 
-    public ChatWindow(App app, Communicator communicator) {
+    public ChatWindow (App app, Communicator communicator) {
+        super("ECS Chat", 700, 485, () -> {
+            Utility.saveMessages();
+            logger.info("Closing chat window.");
+            System.exit(0);
+        });
         this.app = app;
         this.communicator = communicator;
 
@@ -60,13 +56,10 @@ public class ChatWindow {
             Platform.runLater(() -> this.receiveMessage(message));
         });
 
-        this.root = new BorderPane();
-        this.root.setId("border-pane");
-        this.scene = new Scene(this.root, 700, 485);
-        this.scene.getStylesheets().add(this.getClass().getResource("/style/ChatWindow.css").toExternalForm());
-        this.scene.getStylesheets().add(this.getClass().getResource("/style/MessageStyle.css").toExternalForm());
-        this.scene.getStylesheets().add(this.getClass().getResource("/style/Common.css").toExternalForm());
-
+        this.scene.getStylesheets().addAll(
+            Utility.getCSSFile("ChatWindow.css"),
+            Utility.getCSSFile("MessageStyle.css")
+        );
 
         var topBar = new TopBar();
 
@@ -93,21 +86,14 @@ public class ChatWindow {
         });
 
         topBar.addListener("whiteboard", () -> {
-            if (!this.app.getWhiteboardOpen()) {
-                this.app.openWhiteboard();
-                this.app.setWhiteboardStatus(true);
+            if (!this.app.getDrawWindowStatus()) {
+                this.app.openDrawWindow();
             }
-        });
-
-        //Window options
-        var windowOptions = new WindowOptions(this.scene, "ECS Chat", () -> {
-            logger.info("Closing chat window.");
-            System.exit(0);
         });
 
         var top = new VBox();
         top.getChildren().addAll(
-            windowOptions,
+            this.root.getTop(),
             topBar
         );
 
@@ -224,15 +210,6 @@ public class ChatWindow {
         Utility.addMessage(time, msgSplit[0], msgSplit[1]);
         
         this.activeUsers.updateUsers();
-    }
-
-    @SuppressWarnings("all")
-    public Scene getScene() {
-        return this.scene;
-    }
-
-    public Node getRoot() {
-        return this.root;
     }
 
 }

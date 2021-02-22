@@ -18,7 +18,10 @@ import uk.ac.soton.comp1206.Utility.Listeners.CloseWindowListener;
 
 public class WindowOptions extends HBox {
     private static final Logger logger = LogManager.getLogger(WindowOptions.class);
-    private CloseWindowListener cwl;
+
+    private Button minimise;
+    private Button expand;
+    private Button close;
 
     public WindowOptions(Scene scene, String name, CloseWindowListener onClose) {
         this.getStyleClass().add("window-bar");
@@ -33,10 +36,10 @@ public class WindowOptions extends HBox {
 
         //minimise
 
-        var min = new Button("-");
-        min.getStyleClass().addAll("minimise-window", "top-button");
+        this.minimise = new Button("-");
+        this.minimise.getStyleClass().addAll("minimise-window", "top-button");
 
-        min.setOnAction(event -> {
+        this.minimise.setOnAction(event -> {
             var window = (Stage)scene.getWindow();
 
             var timeline = new Timeline();
@@ -55,24 +58,30 @@ public class WindowOptions extends HBox {
 
         //expand window
 
-        var expand = new Button("[ ]");
-        expand.getStyleClass().addAll("expand-window", "top-button");
+        this.expand = new Button("[ ]");
+        this.expand.getStyleClass().addAll("expand-window", "top-button");
 
         //close
 
-        var close = new Button("X");
-        close.getStyleClass().addAll("close-window", "top-button");
+        this.close = new Button("X");
+        this.close.getStyleClass().addAll("close-window", "top-button");
 
-        close.setOnAction(event -> {
-            this.cwl.close();
+        this.close.setOnAction(event -> {
+            onClose.close();
         });
 
         //misc
-
-        this.getChildren().addAll(title, empty, min, expand, close);
+        this.getChildren().addAll(title, empty, this.minimise, this.expand, this.close);
     }
 
-    public void addCloseListener(CloseWindowListener cwl) {
-        this.cwl = cwl;
+    /**
+     * Used to change the onclose method after initialising
+     * @param cwl New close method
+     */
+    public void setOnClose(CloseWindowListener cwl) {
+        this.close.setOnAction(event -> {
+            cwl.close();
+        });
     }
+
 }
