@@ -1,0 +1,72 @@
+.root {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+}
+
+#menu-bar {
+    -fx-background-color: white;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-padding: 3px;
+}
+
+
+#menu-item:hover {
+    -fx-background-color: #8b3838;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+#menu-item:focus {
+    -fx-background-color: #8b3838;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+#menu-bar .label {
+    -fx-font-weight: bold;
+}
+
+#login-page {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+}
+
+#welcome-msg {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    
+}
+
+#name-input {
+    -fx-padding: 8px;
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+    -fx-border-color: transparent;
+    -fx-background-color: #8b3838;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+    -fx-alignment: center;
+}
+
+
+#login-btn {
+    -fx-background-color: white;
+    -fx-text-fill: #333333;
+    -fx-font-size: 20px;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-insets: 10px;
+}
+
+#login-btn:hover {
+    -fx-background-color: #8b3838;
+    -fx-text-fill: white;
+}

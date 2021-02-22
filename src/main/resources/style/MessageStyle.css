@@ -1,0 +1,29 @@
+.bold {
+    -fx-font-weight: bold;
+}
+
+.underline {
+    -fx-underline: true;
+}
+
+.italics {
+    -fx-font-style: italic;
+}
+
+.strike {
+    -fx-strikethrough: true;
+}
+
+.link {
+    -fx-font-fill: red;
+    -fx-underline: true;
+}
+
+.link:hover {
+    -fx-font-fill: blue;
+}
+
+.mention {
+    -fx-text-fill: purple;
+    -fx-font-weight: bold;
+}

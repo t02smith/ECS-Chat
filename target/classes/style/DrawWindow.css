@@ -1,0 +1,13 @@
+#whiteboard {
+    -fx-border-color: black;
+    -fx-border-width: 4px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-color: white;
+}
+
+#wb-border-pane {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+}

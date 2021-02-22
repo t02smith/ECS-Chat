@@ -1,0 +1,198 @@
+#border-pane {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+#message-window {
+    /*-fx-background-image: url("../images/background.jpg");*/
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-padding: 3px;
+}
+
+/*Top bar*/
+
+#top-bar-btn {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+
+}
+
+#title {
+    -fx-font-weight: bold;
+    -fx-font-size: 25px;
+    -fx-text-fill: #8b3838;
+}
+
+#title-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+
+#settings-btn:pressed {
+    -fx-background-color: transparent;
+}
+
+/*Settings */
+
+.sidebar {
+    -fx-background-color: #38383877;
+    -fx-padding: 5px;
+}
+
+#settings-checkbox {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+
+}
+
+#toolbar {
+    -fx-background-color: #20202000;
+    -fx-padding: 5px;
+}
+
+#toolbar Button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-insets: 12px;
+}
+
+TextField {
+    -fx-padding: 5px;
+    -fx-background-color: #8b3838; 
+    -fx-text-fill: white;
+    -fx-background-inset: 10px;
+    -fx-border-inset: 10px;
+
+}
+
+#message-input {
+    -fx-padding: 5px;
+    -fx-background-color: #8b3838; 
+    -fx-text-fill: white;
+    -fx-background-inset: 10px;
+    -fx-border-inset: 10px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}
+
+
+#send-button {
+    -fx-background-color: #33333300;
+    
+}
+
+#message-author {
+    -fx-font-weight: bold;
+    -fx-text-fill:white;
+    -fx-font-size: 17px;
+}
+
+#message-author:hover {
+    -fx-underline: true;
+}
+
+#message-text {
+    -fx-font-size: 13px;
+    -fx-padding: 0 5px 5px 5px;
+}
+
+#message-content {
+    -fx-background-color: #8b3838;
+    -fx-padding: 3px;
+    -fx-font-fill: #dbdbdb;
+    -fx-font-size: 13px;
+}
+
+#time {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dbdbdb;
+}
+
+#message-content-user {
+    -fx-background-color: #1468b6;
+    -fx-padding: 3px;
+    -fx-font-fill: #dbdbdb;
+    -fx-font-size: 13px;
+}
+
+/*User history */
+
+#close-user-history {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+#close-user-history:pressed {
+    -fx-background-color: transparent;
+}
+
+#user-history-message-shell {
+    -fx-border-insets: 5px;
+    -fx-padding: 5px;
+}
+
+#user-history-message {
+    -fx-background-color: #8b3838;
+    -fx-padding: 10px;
+    -fx-font-size: 12px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-text-fill: white;
+}
+
+#user-board-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+/*Active user side bar*/
+
+#active-users-pane {
+    -fx-background-color: #38383877;
+    -fx-border-width: 0;
+}
+
+#active-users-pane .viewport {
+    -fx-background-color: #38383877;
+    -fx-border-width: 0;
+}
+
+#user-active-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-padding: 0;
+}
+
+#active-now {
+    -fx-text-fill: green;
+    -fx-padding: 0;
+}
+
+#last-active {
+    -fx-text-fill: rgb(104, 103, 103);
+    -fx-padding: 0;
+}
