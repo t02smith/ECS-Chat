@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI.Components;
+package uk.ac.soton.comp1206.UI.Components.chatComponents;
 
 import java.util.HashMap;
 
@@ -19,6 +19,7 @@ public class TopBar extends HBox {
     private Button settings;
     private Button users;
     private Button whiteboard;
+    private Button tileGame;
 
     public TopBar() {
         this.setId("title-bar");
@@ -29,11 +30,12 @@ public class TopBar extends HBox {
         this.settings = this.createBtn("settings", "settings.png");
         this.users = this.createBtn("users", "people.png");
         this.whiteboard = this.createBtn("whiteboard", "WhiteBoard.png");
+        this.tileGame = this.createBtn("tileGame", "tileGame.png");
 
         var empty = new Region();
         HBox.setHgrow(empty, Priority.ALWAYS);
 
-        this.getChildren().addAll(this.title, empty, this.whiteboard, this.users, this.settings);
+        this.getChildren().addAll(this.title, empty, this.tileGame, this.whiteboard, this.users, this.settings);
     }
 
     public void addListener(String name, TopBarListener tbl) {

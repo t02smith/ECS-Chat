@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI.Components;
+package uk.ac.soton.comp1206.UI.Components.chatComponents;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +82,7 @@ public class Settings extends VBox {
     //Animations
 
     public void slideIn() {
-        var translate = new TranslateTransition(new Duration(500), this);
+        var translate = new TranslateTransition(new Duration(1), this);
         translate.setFromX(150);
         translate.setByX(-150);
 

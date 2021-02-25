@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI;
+package uk.ac.soton.comp1206.UI.Components;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -28,7 +28,6 @@ public class LoginWindow extends Window {
         this.scene.getStylesheets().addAll(Utility.getCSSFile("LoginWindow.css"));
         this.createWindow();
         this.imgAnimation();
-
     }
 
     private void createWindow() {
@@ -40,7 +39,8 @@ public class LoginWindow extends Window {
         //Server drop down menu
         var serverSelect = new ComboBox<String>();
         serverSelect.getItems().addAll(serverList.keySet());
-        serverSelect.getSelectionModel().select("ECS: 9500");
+        serverSelect.getSelectionModel().select("Echo");
+        this.app.setServer(Utility.getServer("Echo"));
         serverSelect.setOnAction(event -> {
             this.app.setServer(serverList.get(serverSelect.getValue()));
         });
@@ -91,7 +91,7 @@ public class LoginWindow extends Window {
     }
 
     private void handleLogin() {
-        if (this.app.getUsername().isBlank()) return;
+        if (this.app.getUsername().isBlank() ) return;
         app.openChat();
         this.stage.close();
         logger.info("Closing login window.");

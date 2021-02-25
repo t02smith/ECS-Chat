@@ -3,19 +3,17 @@ package uk.ac.soton.comp1206;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class User implements Comparable<User> {
+public class User {
     final private String name;
+
     private ArrayList<String[]> messages;
     private long lastActive;
+
+    private int tileGameScore = 0;
 
     public User(String name) {
         this.name = name;
         this.messages = new ArrayList<>();
-    }
-
-    public int compareTo(User user) {
-        if (this.getLastActive() >= user.getLastActive()) return -1;
-        else return 1;
     }
 
     public void addMessage(String message, String time) {
@@ -34,5 +32,13 @@ public class User implements Comparable<User> {
 
     public long getLastActive() {
         return this.lastActive;
+    }
+
+    public int getTileScore() {
+        return this.tileGameScore;
+    }
+
+    public void setTileScore(int newScore) {
+        this.tileGameScore = newScore;
     }
 }

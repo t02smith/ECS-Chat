@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI.Components;
+package uk.ac.soton.comp1206.UI.Components.chatComponents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import uk.ac.soton.comp1206.User;
+import uk.ac.soton.comp1206.Utility.UserComparator;
+import uk.ac.soton.comp1206.Utility.UserComparator.Field;
 
 public class ActiveUsers extends ScrollPane {
     private static final Logger logger = LogManager.getLogger(Settings.class);
@@ -35,7 +37,7 @@ public class ActiveUsers extends ScrollPane {
 
     public void updateUsers() {
         var activeList = new VBox(this.title);
-        Collections.sort(this.users);
+        Collections.sort(this.users, new UserComparator(Field.LASTACTIVE));
 
         for (User user: this.users) {
             var nextUser = new VBox();

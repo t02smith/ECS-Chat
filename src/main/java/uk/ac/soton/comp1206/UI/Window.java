@@ -8,12 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.ac.soton.comp1206.Network.Communicator;
+import uk.ac.soton.comp1206.UI.Components.WindowOptions;
 import uk.ac.soton.comp1206.UI.Components.wbComponents.Whiteboard;
 import uk.ac.soton.comp1206.Utility.Utility;
 import uk.ac.soton.comp1206.Utility.Listeners.CloseWindowListener;
 
-public class Window {
+public abstract class Window {
     protected static final Logger logger = LogManager.getLogger(Window.class);
+
+    protected Communicator communicator;
 
     protected BorderPane root = new BorderPane();
     protected Scene scene;
@@ -31,7 +35,7 @@ public class Window {
      * @param height Height of the window
      * @param onClose Do this when the window is closed
      */
-    public Window(String title, double width, double height, CloseWindowListener onClose) {
+    public Window(String title, double width, double height, Communicator communicator, CloseWindowListener onClose) {
         //Sets the basic styles for the window
         this.root.setId("border-pane");
         this.scene = new Scene(this.root, width, height);
@@ -65,6 +69,8 @@ public class Window {
 
         this.stage.show();
         this.stage.centerOnScreen();
+
+        this.communicator = communicator;
     }
 
     /**
@@ -73,12 +79,22 @@ public class Window {
      * @param width
      * @param height
      */
-    public Window(String title, double width, double height) {
-        this(title, width, height, () -> {
+    public Window(String title, double width, double height, Communicator communicator) {
+        this(title, width, height, communicator, () -> {
             logger.info("{} closing.", title);
             System.exit(0);
             
         });
+    }
+
+    /**
+     * Constructor for a window without any communicator
+     * @param title
+     * @param width
+     * @param height
+     */
+    public Window(String title, double width, double height) {
+        this(title, width, height, null);
     }
 
     public void setOnClose(CloseWindowListener cwl) {

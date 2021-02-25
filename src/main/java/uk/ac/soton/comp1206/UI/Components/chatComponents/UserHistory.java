@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI.Components;
+package uk.ac.soton.comp1206.UI.Components.chatComponents;
 
 import java.util.Iterator;
 

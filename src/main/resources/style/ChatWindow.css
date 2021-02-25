@@ -1,8 +1,4 @@
-#border-pane {
-    -fx-background-image: url("../images/background.jpg");
-    -fx-background-size: cover;
-    -fx-background-color: transparent;
-}
+
 
 .scroll-pane .viewport {
     -fx-background-color: transparent;
@@ -10,7 +6,6 @@
 }
 
 #message-window {
-    /*-fx-background-image: url("../images/background.jpg");*/
     -fx-background-size: cover;
     -fx-background-color: transparent;
 }

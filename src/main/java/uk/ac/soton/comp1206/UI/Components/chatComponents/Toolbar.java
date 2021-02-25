@@ -1,4 +1,4 @@
-package uk.ac.soton.comp1206.UI.Components;
+package uk.ac.soton.comp1206.UI.Components.chatComponents;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

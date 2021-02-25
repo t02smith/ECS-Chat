@@ -1,5 +1,7 @@
 package uk.ac.soton.comp1206;
 
+import java.util.HashMap;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +12,8 @@ import uk.ac.soton.comp1206.Network.Communicator;
 import uk.ac.soton.comp1206.UI.ChatWindow;
 import uk.ac.soton.comp1206.UI.DrawWindow;
 import uk.ac.soton.comp1206.UI.LoginWindow;
+import uk.ac.soton.comp1206.UI.TileClickerWindow;
+import uk.ac.soton.comp1206.Utility.Utility;
 
 /**
  * JavaFX App
@@ -20,9 +24,15 @@ public class App extends Application {
     private Communicator communicator;
 
     private boolean drawWindowOpen = false;
+    private boolean tileWindowOpen = false;
 
-    private SimpleStringProperty username = new SimpleStringProperty();
-    private SimpleStringProperty server = new SimpleStringProperty("ws://discord.ecs.soton.ac.uk:9500");
+    final private String defaultServer = "Echo";
+
+    private SimpleStringProperty username = new SimpleStringProperty("");
+    private SimpleStringProperty server = new SimpleStringProperty(Utility.getServer(defaultServer));
+
+    //List of users
+    private HashMap<String, User> users = new HashMap<>();
 
     @Override
     public void start(Stage stage) {
@@ -33,54 +43,6 @@ public class App extends Application {
         logger.info("Starting client");
         launch();
     }
-
-    public void openDrawWindow() {
-        logger.info("Opening Draw Window");
-        new DrawWindow(this, this.communicator);
-        drawWindowOpen = true;
-    }
-
-    /*
-    public void openWhiteboard() {
-        logger.info("Starting whiteboard");
-
-        this.wbWindow = new Stage();
-        this.wbWindow.setTitle("ECS Draw");
-        this.wbWindow.setOnCloseRequest(event -> {
-            this.setWhiteboardStatus(false);
-            this.wbWindow.close();
-            logger.info("Whiteboard closing");
-        });
-
-        this.wbWindow.getIcons().add(Utility.getImage("ECS.png"));
-        this.wbWindow.initStyle(StageStyle.UNDECORATED);
-
-        var whiteboard = new DrawWindow(this, this.communicator);
-        this.wbWindow.setScene(whiteboard.getScene());
-
-        var root = whiteboard.getRoot();
-        root.setOnMousePressed(event -> {
-            if (!(event.getTarget() instanceof Whiteboard)) {
-                whiteboard.setXOffset(event.getSceneX());
-                whiteboard.setYOffset(event.getSceneY());
-            }
-        });
-
-        root.setOnMouseDragged(event -> {
-            if (!(event.getTarget() instanceof Whiteboard)) {
-                this.wbWindow.setX(event.getScreenX() - whiteboard.getXOffset());
-                this.wbWindow.setY(event.getScreenY() - whiteboard.getYOffset());
-            }
-            
-        });
-
-        this.wbWindow.centerOnScreen();
-        this.wbWindow.show();
-    }
-
-    public void closeWhiteboard() {
-        this.wbWindow.close();
-    }/*
 
     /**
      * Opens the login window
@@ -104,11 +66,51 @@ public class App extends Application {
         System.exit(0);
     }
 
+    //Open draw window
+
+    public void openDrawWindow() {
+        logger.info("Opening Draw Window");
+        new DrawWindow(this, this.communicator);
+        this.drawWindowOpen = true;
+    }
+
+
+    //Open tile window
+
+    public void openTileWindow() {
+        logger.info("Opening Tile Window");
+        new TileClickerWindow(this, this.communicator);
+        this.tileWindowOpen = true;
+    }
+
     //Changing server
 
     public void changeServer(String newServer) {
         logger.info("Changing server to: {}", newServer);
         this.communicator.connect(newServer);
+    }
+
+    //Users
+
+    public void addUser(User user) {
+        var name = user.getName();
+        if (this.users.containsKey(name)) {
+            logger.error("Username {} already exists. Overwriting user.", name);
+        }
+
+        this.users.put(name, user);
+    }
+
+    /**
+     * Creates a new user by name
+     * @param name
+     */
+    public void addUser(String name) {
+        this.addUser(new User(name));
+    }
+
+    public User getUser(String name) {
+        return this.users.get(name);
     }
 
     //Username property
@@ -146,6 +148,16 @@ public class App extends Application {
 
     public void setDrawWindowStatus(boolean status) {
         this.drawWindowOpen = status;
+    }
+
+    //Tile game window
+
+    public boolean getTileWindowStatus() {
+        return this.tileWindowOpen;
+    }
+
+    public void setTileWindowStatus(boolean status) {
+        this.tileWindowOpen = status;
     }
 
 }

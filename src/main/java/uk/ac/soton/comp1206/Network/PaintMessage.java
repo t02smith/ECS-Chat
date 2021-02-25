@@ -53,14 +53,14 @@ public class PaintMessage {
     }
 
     public String composeMessage() {
-        String msg = "DRAW #";
-        msg += this.colour.toString().substring(2);
+        StringBuilder msg = new StringBuilder("DRAW #");
+        msg.append(this.colour.toString().substring(2));
 
         for (Point2D point: this.points) {
-            msg += String.format(" %s,%s", point.getX(), point.getY());
+            msg.append(String.format(" %s,%s", point.getX(), point.getY()));
         }
 
-        return msg;
+        return msg.toString();
     }
 
     public void addPoint(double x, double y) {

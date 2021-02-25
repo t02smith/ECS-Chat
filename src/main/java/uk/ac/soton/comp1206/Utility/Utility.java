@@ -1,11 +1,16 @@
 package uk.ac.soton.comp1206.Utility;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +33,7 @@ public class Utility {
     private static String absolutePath;
 
     //Server list
-    private static HashMap<String, String> servers = new HashMap<>();
+    private static TreeMap<String, String> servers = new TreeMap<>();
 
     @SuppressWarnings("all")
     public static Image getImage(String url) {
@@ -41,17 +46,54 @@ public class Utility {
         return Utility.class.getResource("/style/"+name).toExternalForm();
     }
 
+    //Get buffered reader for file
+
+    public static ArrayList<String> getCSVFile(String path) {
+        try {
+            var reader = new BufferedReader(new FileReader(new File(Utility.class.getResource(path).toURI())));
+            var lines = new ArrayList<String>();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+
+            return lines;
+        } catch (IOException | URISyntaxException e) {
+            logger.error("Error finding file");
+            return null;
+        }
+    }
+
     //Get list of available servers
 
-    public static HashMap<String, String> getServers() {
+    public static TreeMap<String, String> getServers() {
         if (servers.size() == 0) fillServerList();
         return servers;
     }
+    
+    public static String getServer(String key) {
+        return servers.get(key);
+    }
 
     private static void fillServerList() {
+        try {
+            var serverList = new BufferedReader(new FileReader(new File(Utility.class.getResource("/config/servers.csv").toURI())));
+
+            String line;
+            String[] server;
+            while ((line = serverList.readLine()) != null) {
+                server = line.split(",");
+                servers.put(server[0], server[1]);
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("No servers found");
+        } catch (IOException | URISyntaxException e) {
+            logger.error("Error reading file.");
+        }
+        
+        //This program will alwyas add the echo web socket
         servers.put("Echo", "ws://echo.websocket.org");
-        servers.put("ECS: 9500", "ws://discord.ecs.soton.ac.uk:9500");
-        servers.put("ECS: 9501", "ws://discord.ecs.soton.ac.uk:9501");
     }
 
     //Audio

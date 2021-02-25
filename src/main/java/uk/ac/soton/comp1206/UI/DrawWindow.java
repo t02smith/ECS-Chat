@@ -10,13 +10,11 @@ import uk.ac.soton.comp1206.Utility.Utility;
 import uk.ac.soton.comp1206.UI.Components.wbComponents.WbToolbar;
 
 public class DrawWindow extends Window { 
-    private final Communicator communicator;
-
     private Whiteboard canvas;
     private WbToolbar toolbar;
 
     public DrawWindow(App app, Communicator communicator) {
-        super("ECS Draw", 650, 500);
+        super("ECS Draw", 650, 500, communicator);
         this.scene.getStylesheets().add(Utility.getCSSFile("DrawWindow.css"));
 
         //Closes just the draw window when exited
@@ -25,8 +23,6 @@ public class DrawWindow extends Window {
             this.stage.close();
             app.setDrawWindowStatus(false);
         });
-
-        this.communicator = communicator;
 
         //Add draw message listener
         this.communicator.addListener((message) -> Platform.runLater(() -> {
@@ -57,10 +53,12 @@ public class DrawWindow extends Window {
         //Whiteboard tools
         this.toolbar = new WbToolbar();
 
+        /*
+        //Taken out -> messages have no support to change this
         this.toolbar.addLineWidthListener(width -> {
             this.canvas.changeLineWidth(width);
             logger.info("Line width changed to: {}", width);
-        });
+        });*/
 
         this.toolbar.addChangeColourListener(colour -> {
             this.canvas.changeColour(colour);

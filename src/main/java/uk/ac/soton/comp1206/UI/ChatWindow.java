@@ -2,7 +2,6 @@ package uk.ac.soton.comp1206.UI;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
@@ -10,12 +9,12 @@ import javafx.scene.layout.VBox;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.User;
 import uk.ac.soton.comp1206.Network.Communicator;
-import uk.ac.soton.comp1206.UI.Components.ActiveUsers;
-import uk.ac.soton.comp1206.UI.Components.Message;
-import uk.ac.soton.comp1206.UI.Components.Settings;
-import uk.ac.soton.comp1206.UI.Components.Toolbar;
-import uk.ac.soton.comp1206.UI.Components.TopBar;
-import uk.ac.soton.comp1206.UI.Components.UserHistory;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.ActiveUsers;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.Message;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.Settings;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.Toolbar;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.TopBar;
+import uk.ac.soton.comp1206.UI.Components.chatComponents.UserHistory;
 import uk.ac.soton.comp1206.Utility.Utility;
 
 
@@ -23,12 +22,10 @@ public class ChatWindow extends Window {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private final App app;
-    private final Communicator communicator;
 
     private VBox messages;
     private ScrollPane sp;
 
-    private HashMap<String, User> users = new HashMap<>();
     private ActiveUsers activeUsers = new ActiveUsers();
     private Settings settings = new Settings(150);
 
@@ -36,13 +33,13 @@ public class ChatWindow extends Window {
     private boolean activeUsersOpen = false;
 
     public ChatWindow (App app, Communicator communicator) {
-        super("ECS Chat", 700, 485, () -> {
+        super("ECS Chat", 700, 485, communicator, () -> {
             Utility.saveMessages();
             logger.info("Closing chat window.");
             System.exit(0);
         });
+
         this.app = app;
-        this.communicator = communicator;
 
         this.settings.addUsernameListener(name -> {
             this.app.setUsername(name);
@@ -88,6 +85,12 @@ public class ChatWindow extends Window {
         topBar.addListener("whiteboard", () -> {
             if (!this.app.getDrawWindowStatus()) {
                 this.app.openDrawWindow();
+            }
+        });
+
+        topBar.addListener("tileGame", () -> {
+            if (!this.app.getTileWindowStatus()) {
+                this.app.openTileWindow();
             }
         });
 
@@ -154,7 +157,7 @@ public class ChatWindow extends Window {
      * @param name The name of the user
      */
     public void displayUserBoard(String name) {
-        this.root.setRight(new UserHistory(this, this.users.get(name)));
+        this.root.setRight(new UserHistory(this, this.app.getUser(name)));
     }
 
     /**
@@ -185,12 +188,12 @@ public class ChatWindow extends Window {
         if (msgSplit.length != 2) return;
 
         //If the user has already sent a message
-        if (this.users.containsKey(msgSplit[0])) {
-            this.users.get(msgSplit[0]).addMessage(msgSplit[1], time);
+        if (this.app.getUser(msgSplit[0]) != null) {
+            this.app.getUser(msgSplit[0]).addMessage(msgSplit[1], time);
         } else { //If it is a new user
             var user = new User(msgSplit[0]);
             user.addMessage(msgSplit[1], time);
-            this.users.put(msgSplit[0], user);
+            this.app.addUser(user);
             this.activeUsers.addUser(user);
             logger.info("User: '" + msgSplit[0] + "' created.");
         }

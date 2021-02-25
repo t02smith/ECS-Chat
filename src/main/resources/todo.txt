@@ -1,2 +1,0 @@
--> Create Window class
-    -> Sets basic decoration for window (incl. window options)
