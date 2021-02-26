@@ -1,3 +1,41 @@
+/*Message styling */
+
+#message-author {
+    -fx-font-weight: bold;
+    -fx-text-fill:white;
+    -fx-font-size: 17px;
+}
+
+#message-author:hover {
+    -fx-underline: true;
+}
+
+#message-text {
+    -fx-font-size: 13px;
+    -fx-padding: 0 5px 5px 5px;
+}
+
+#message-content {
+    -fx-background-color: #8b3838;
+    -fx-padding: 3px;
+    -fx-font-fill: #dbdbdb;
+    -fx-font-size: 13px;
+}
+
+#time {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dbdbdb;
+}
+
+#message-content-user {
+    -fx-background-color: #1468b6;
+    -fx-padding: 3px;
+    -fx-font-fill: #dbdbdb;
+    -fx-font-size: 13px;
+}
+
+/*Extra styling */
+
 .bold {
     -fx-font-weight: bold;
 }

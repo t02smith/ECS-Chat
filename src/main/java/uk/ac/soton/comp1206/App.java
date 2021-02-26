@@ -49,6 +49,7 @@ public class App extends Application {
      */
     public void openLogin() {
         logger.info("Opening Login Window");
+        //Utility.playAudio("sounds/Halo.m4a");
         new LoginWindow(this);
     }
 

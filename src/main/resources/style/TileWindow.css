@@ -38,10 +38,12 @@
 
 .scroll-pane .viewport {
     -fx-background-color: transparent;
+    -fx-alignment: center;
 }
 
 .scroll-pane {
     -fx-background-color: rgba(0, 0, 0, 0.336);
+    -fx-alignment: center;
 
 }
 
@@ -50,5 +52,17 @@
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-family: monospace;
-    
+
+}
+
+/*Game over screen*/
+
+.game-over-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: red;
+    -fx-font-size: 24px;
+}
+
+.game-over-screen {
+    -fx-alignment: center;
 }

@@ -3,11 +3,15 @@ package uk.ac.soton.comp1206.UI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import uk.ac.soton.comp1206.Network.Communicator;
 import uk.ac.soton.comp1206.UI.Components.WindowOptions;
 import uk.ac.soton.comp1206.UI.Components.wbComponents.Whiteboard;
@@ -100,6 +104,23 @@ public abstract class Window {
     public void setOnClose(CloseWindowListener cwl) {
         this.windowOptions.setOnClose(cwl);
     }
+
+    public void openSidebar(Node sidebar) {
+        var translate = new TranslateTransition(new Duration(500), sidebar);
+        translate.setFromX(150);
+        translate.setByX(-150);
+
+        translate.play();
+    }
+    
+    public void closeSidebar(Node sidebar, EventHandler<ActionEvent> endEvent) {
+        var translate = new TranslateTransition(new Duration(500), sidebar);
+        translate.setByX(150);
+        translate.setOnFinished(endEvent);
+
+        translate.play();
+    }
+
 
     public Scene getScene() {
         return this.scene;

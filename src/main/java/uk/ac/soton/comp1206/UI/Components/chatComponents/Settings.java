@@ -3,16 +3,12 @@ package uk.ac.soton.comp1206.UI.Components.chatComponents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import uk.ac.soton.comp1206.Utility.Utility;
 import uk.ac.soton.comp1206.Utility.Listeners.ChangeServerListener;
 import uk.ac.soton.comp1206.Utility.Listeners.UsernameListener;
@@ -77,28 +73,6 @@ public class Settings extends VBox {
 
         this.getChildren().addAll(this.iv, mute, saveMsg, changeLocation, username, serverSelect);
 
-    }
-
-    //Animations
-
-    public void slideIn() {
-        var translate = new TranslateTransition(new Duration(1), this);
-        translate.setFromX(150);
-        translate.setByX(-150);
-
-        translate.play();
-    }
-
-    /**
-     * Closing sidebar
-     * @param event Do this once finished
-     */
-    public void slideOut(EventHandler<ActionEvent> endEvent) {
-        var translate = new TranslateTransition(new Duration(500), this);
-        translate.setByX(150);
-        translate.setOnFinished(endEvent);
-
-        translate.play();
     }
 
     public void addUsernameListener(UsernameListener ul) {

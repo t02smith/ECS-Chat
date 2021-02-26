@@ -1,6 +1,5 @@
 package uk.ac.soton.comp1206.UI;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -9,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.Network.Communicator;
@@ -103,6 +103,18 @@ public class TileClickerWindow extends Window {
         this.currentColour.getStyleClass().add("current-colour");
         this.currentColour.setAlignment(Pos.CENTER);
 
+        //Current score
+        this.scoreLbl = new Label("Score: " + this.score);
+        this.scoreLbl.getStyleClass().add("score-label");
+
+        //Game over
+        var gameOver = new Label("GAME OVER");
+        gameOver.getStyleClass().add("game-over-label");
+
+        //Right pane
+        var vbox = new VBox(this.currentColour, this.scoreLbl, this.boardPane);
+        vbox.getStyleClass().add("right-pane");
+
         //Sets the current colour to change every 2 seconds
         var timeline = new Timeline(
             new KeyFrame(
@@ -111,15 +123,24 @@ public class TileClickerWindow extends Window {
                     this.currentColour.changeColour(this.colours);
                 })
         );
-        timeline.setCycleCount(Animation.INDEFINITE);
+
+        //Play for a minute
+        timeline.setCycleCount(1);
+
+        timeline.setOnFinished(event -> {
+            logger.info("Game finished with a score {}.", this.score);
+            this.submitResult();
+
+            var gameOverScreen = new VBox(gameOver);
+            gameOverScreen.getChildren().addAll(vbox.getChildren());
+            gameOverScreen.getStyleClass().add("game-over-screen");
+
+            this.root.setCenter(gameOverScreen);
+            this.root.setRight(null);
+
+        });
+
         timeline.play();
-
-        //Current score
-        this.scoreLbl = new Label("Score: " + this.score);
-        this.scoreLbl.getStyleClass().add("score-label");
-
-        var vbox = new VBox(this.currentColour, this.scoreLbl, this.boardPane);
-        vbox.getStyleClass().add("right-pane");
 
         return vbox;
     }
@@ -132,16 +153,18 @@ public class TileClickerWindow extends Window {
     private void fillLeaderboard(String message) {
         String[] scores = message.split("\n");
         var vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
         
         String[] eachScore;
         for (int i = 1; i < scores.length && i < 11; i++) {
             eachScore = scores[i].split("=");
 
             var userLbl = new Label(
-                String.format("%-2d. %-12s %s", i+1, eachScore[0], eachScore[1])
+                String.format("%-2d. %-12s %s", i, eachScore[0], eachScore[1])
             );
 
             userLbl.getStyleClass().add("user-score-label");
+            userLbl.setTextAlignment(TextAlignment.CENTER);
             vbox.getChildren().add(userLbl);
         }
 

@@ -41,53 +41,70 @@ public class ChatWindow extends Window {
 
         this.app = app;
 
+        //Listens for a change in username
         this.settings.addUsernameListener(name -> {
             this.app.setUsername(name);
         });
 
+        //Listens for a change in server
         this.settings.addChangeServerListener(server -> {
             this.app.changeServer(server);
         });
 
+        //Listens for a message
         this.communicator.addListener(message -> {
             Platform.runLater(() -> this.receiveMessage(message));
         });
 
+        //Adds the different styles for the window
         this.scene.getStylesheets().addAll(
             Utility.getCSSFile("ChatWindow.css"),
             Utility.getCSSFile("MessageStyle.css")
         );
 
+
+        //Bar at the top with the chat options
         var topBar = new TopBar();
 
+        //Opens settings
         topBar.addListener("settings", () -> {
             if (this.settingsOpen) {
-                this.settings.slideOut(event -> {
+                this.closeSidebar(this.settings, event -> {
                     this.root.setRight(null);
                 });
+
                 //Message window slide right
             } else {
                 this.root.setRight(this.settings);
                 //message window slide left
-                this.settings.slideIn();
+                this.openSidebar(this.settings);
             }
 
             this.settingsOpen = !this.settingsOpen;
         });
 
+        //Opens active users
         topBar.addListener("users", () -> {
-            if (this.activeUsersOpen) this.root.setRight(null);
-            else this.root.setRight(this.activeUsers);
+            if (this.activeUsersOpen) {
+                this.closeSidebar(this.activeUsers, event -> {
+                    this.root.setRight(null);
+                });
+            } else {
+                this.root.setRight(this.activeUsers);
+                this.openSidebar(this.activeUsers);
+            }
 
             this.activeUsersOpen = !this.activeUsersOpen;
         });
 
+        //Opens the whiteboard
         topBar.addListener("whiteboard", () -> {
             if (!this.app.getDrawWindowStatus()) {
                 this.app.openDrawWindow();
             }
         });
 
+        //Opens the tile game
         topBar.addListener("tileGame", () -> {
             if (!this.app.getTileWindowStatus()) {
                 this.app.openTileWindow();
