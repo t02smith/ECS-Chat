@@ -17,7 +17,6 @@ import uk.ac.soton.comp1206.UI.Components.chatComponents.TopBar;
 import uk.ac.soton.comp1206.UI.Components.chatComponents.UserHistory;
 import uk.ac.soton.comp1206.Utility.Utility;
 
-
 public class ChatWindow extends Window {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 

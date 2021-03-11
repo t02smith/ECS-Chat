@@ -3,7 +3,7 @@ package uk.ac.soton.comp1206.UI.Components.chatComponents;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,15 +96,8 @@ public class Message extends HBox {
         var msgContent = new TextFlow();
         var words = content.split(" ");
 
-        var styling = new HashMap<String, Boolean>();
-        styling.put("bold", false);
-        styling.put("underline", false);
-        styling.put("italics", false);
-        styling.put("link", false);
-        styling.put("strike", false);
-
         for (String word: words) {
-            var text = this.formatWord(new Text(), word, styling);
+            var text = this.formatWord(new Text(), word);
 
             if (this.styleClose) {
                 var space = new Text(" ");
@@ -114,62 +107,35 @@ public class Message extends HBox {
             }
         }
 
+        MsgStyle.resetActive();
         return msgContent;
     }
 
-    public Text formatWord(Text text, String word, HashMap<String, Boolean> styling) {       
+    private Text formatWord(Text text, String word) {
 
-        //check start of string
-        if (word.startsWith("__")) {
-            styling.replace("underline", !styling.get("underline"));
-            return formatWord(text, word.substring(2), styling);
-        } else if (word.startsWith("**")) {
-            styling.replace("bold", !styling.get("bold"));
-            return formatWord(text, word.substring(2), styling);
-        } else if (word.startsWith("++")) {
-            styling.replace("italics", !styling.get("italics"));
-            return formatWord(text, word.substring(2), styling);
-        } else if (word.startsWith("--")) {
-            styling.replace("strike", !styling.get("strike"));
-            return formatWord(text, word.substring(2), styling);
-        }
-        
-        //Check end of string
-        else if (word.endsWith("__")) {
-            this.styleClose = true;
-            text.getStyleClass().add("underline");
-            styling.replace("underline", !styling.get("underline"));
-            return formatWord(text, word.substring(0, word.length()-2), styling);
-        } else if (word.endsWith("**")) {
-            this.styleClose = true;
-            text.getStyleClass().add("bold");
-            styling.replace("bold", !styling.get("bold"));
-            return formatWord(text, word.substring(0, word.length()-2), styling);
-        } else if (word.endsWith("++")) {
-            this.styleClose = true;
-            text.getStyleClass().add("italics");
-            styling.replace("italics", !styling.get("italics"));
-            return formatWord(text, word.substring(0, word.length()-2), styling);
-        } else if (word.endsWith("--")) {
-            this.styleClose = true;
-            text.getStyleClass().add("strike");
-            styling.replace("strike", !styling.get("strike"));
-            return formatWord(text, word.substring(0, word.length()-2), styling);
-        }
-        
-        //Links
-        else if (word.matches("(http[s]?:\\/\\/)?(www\\.)?(\\w+)(\\.\\w+[/]?)+")) {
-            return this.createLink(text, word);
-        }
-        
-        //If there is not styling
-        else {
-            for (String style: styling.keySet()) {
-                if (styling.get(style)) text.getStyleClass().add(style);
+
+        for (String key: MsgStyle.keyset) {
+            if (word.startsWith(key)) {
+                MsgStyle.getStyle(key).swapActive();
+                return this.formatWord(text, word.substring(2));
             }
-            text.setText(this.styleClose ? word: word + " ");
-            return text;
         }
+
+        for (String key: MsgStyle.keyset) {
+            var style = MsgStyle.getStyle(key);
+            if (style.active) text.getStyleClass().add(style.toString());
+        }
+
+        for (String key: MsgStyle.keyset) {
+            if (word.endsWith(key)) {
+
+                MsgStyle.getStyle(key).swapActive();
+                return this.formatWord(text, word.substring(0, word.length()-2));
+            }
+        }
+
+        text.setText(this.styleClose ? word: word + " ");
+        return text;
     }
     
 
@@ -181,6 +147,7 @@ public class Message extends HBox {
         return time;
     }
 
+    @Deprecated
     private Text createLink(Text text, String word) {
         text.getStyleClass().addAll("link", "italics");
         text.setFill(Color.DARKGREEN);
@@ -201,6 +168,54 @@ public class Message extends HBox {
 
     public TextFlow getMessageContent() {
         return this.msgContent;
+    }
+
+    public enum MsgStyle {
+        BOLD("**"),
+        ITALIC("++"),
+        UNDERLINE("__"),
+        STRIKE("--");
+
+        private static ArrayList<String> keyset = MsgStyle.createKeySet();
+
+        private boolean active = false;
+        private String key;
+
+        private MsgStyle(String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return this.key;
+        }
+
+        public void swapActive() {
+            this.active = !this.active;
+        }
+
+        private static MsgStyle getStyle(String key) {
+            for (MsgStyle style: MsgStyle.values()) {
+                if (style.getKey().equals(key)) return style;
+            }
+
+            return null;
+        }
+
+        private static ArrayList<String> createKeySet() {
+            var keys = new ArrayList<String>();
+
+            for (MsgStyle style: MsgStyle.values()) {
+                keys.add(style.getKey());
+            }
+
+            return keys;
+        }
+
+        private static void resetActive() {
+            for (MsgStyle style: MsgStyle.values()) {
+                style.active = false;
+            }
+        }
     }
     
 }

@@ -125,7 +125,7 @@ public class TileClickerWindow extends Window {
         );
 
         //Play for a minute
-        timeline.setCycleCount(1);
+        timeline.setCycleCount(24);
 
         timeline.setOnFinished(event -> {
             logger.info("Game finished with a score {}.", this.score);

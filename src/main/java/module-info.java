@@ -1,4 +1,3 @@
-@SuppressWarnings("all")
 module uk.ac.soton.comp1206 {
     requires java.scripting;
     requires java.desktop;

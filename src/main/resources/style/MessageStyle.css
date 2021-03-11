@@ -52,6 +52,22 @@
     -fx-strikethrough: true;
 }
 
+.BOLD {
+    -fx-font-weight: bold;
+}
+
+.UNDERLINE {
+    -fx-underline: true;
+}
+
+.ITALIC {
+    -fx-font-style: italic;
+}
+
+.STRIKE {
+    -fx-strikethrough: true;
+}
+
 .link {
     -fx-font-fill: red;
     -fx-underline: true;
